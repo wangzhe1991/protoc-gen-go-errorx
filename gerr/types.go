@@ -2,8 +2,8 @@
 package gerr
 
 // BadRequest new BadRequest error that is mapped to a 400 response.
-func BadRequest(reason, message string) *Error {
-	return Newf(400, reason, message)
+func BadRequest(code int32, reason, message string) *Error {
+	return Newf(400, code, reason, message)
 }
 
 // IsBadRequest determines if err is an error which indicates a BadRequest error.
@@ -13,8 +13,8 @@ func IsBadRequest(err error) bool {
 }
 
 // Unauthorized new Unauthorized error that is mapped to a 401 response.
-func Unauthorized(reason, message string) *Error {
-	return Newf(401, reason, message)
+func Unauthorized(code int32, reason, message string) *Error {
+	return Newf(401, code, reason, message)
 }
 
 // IsUnauthorized determines if err is an error which indicates a Unauthorized error.
@@ -24,8 +24,8 @@ func IsUnauthorized(err error) bool {
 }
 
 // Forbidden new Forbidden error that is mapped to a 403 response.
-func Forbidden(reason, message string) *Error {
-	return Newf(403, reason, message)
+func Forbidden(code int32, reason, message string) *Error {
+	return Newf(403, code, reason, message)
 }
 
 // IsForbidden determines if err is an error which indicates a Forbidden error.
@@ -35,8 +35,8 @@ func IsForbidden(err error) bool {
 }
 
 // NotFound new NotFound error that is mapped to a 404 response.
-func NotFound(reason, message string) *Error {
-	return Newf(404, reason, message)
+func NotFound(code int32, reason, message string) *Error {
+	return Newf(404, code, reason, message)
 }
 
 // IsNotFound determines if err is an error which indicates an NotFound error.
@@ -46,8 +46,8 @@ func IsNotFound(err error) bool {
 }
 
 // Conflict new Conflict error that is mapped to a 409 response.
-func Conflict(reason, message string) *Error {
-	return Newf(409, reason, message)
+func Conflict(code int32, reason, message string) *Error {
+	return Newf(409, code, reason, message)
 }
 
 // IsConflict determines if err is an error which indicates a Conflict error.
@@ -57,8 +57,8 @@ func IsConflict(err error) bool {
 }
 
 // InternalServer new InternalServer error that is mapped to a 500 response.
-func InternalServer(reason, message string) *Error {
-	return Newf(500, reason, message)
+func InternalServer(code int32, reason, message string) *Error {
+	return Newf(500, code, reason, message)
 }
 
 // IsInternalServer determines if err is an error which indicates an Internal error.
@@ -68,8 +68,8 @@ func IsInternalServer(err error) bool {
 }
 
 // ServiceUnavailable new ServiceUnavailable error that is mapped to a HTTP 503 response.
-func ServiceUnavailable(reason, message string) *Error {
-	return Newf(503, reason, message)
+func ServiceUnavailable(code int32, reason, message string) *Error {
+	return Newf(503, code, reason, message)
 }
 
 // IsServiceUnavailable determines if err is an error which indicates a Unavailable error.
@@ -79,8 +79,8 @@ func IsServiceUnavailable(err error) bool {
 }
 
 // GatewayTimeout new GatewayTimeout error that is mapped to a HTTP 504 response.
-func GatewayTimeout(reason, message string) *Error {
-	return Newf(504, reason, message)
+func GatewayTimeout(code int32, reason, message string) *Error {
+	return Newf(504, code, reason, message)
 }
 
 // IsGatewayTimeout determines if err is an error which indicates a GatewayTimeout error.
@@ -90,8 +90,8 @@ func IsGatewayTimeout(err error) bool {
 }
 
 // ClientClosed new ClientClosed error that is mapped to a HTTP 499 response.
-func ClientClosed(reason, message string) *Error {
-	return Newf(499, reason, message)
+func ClientClosed(code int32, reason, message string) *Error {
+	return Newf(499, code, reason, message)
 }
 
 // IsClientClosed determines if err is an error which indicates a IsClientClosed error.

@@ -14,6 +14,8 @@ import (
 const (
 	// UnknownCode is unknown code for error info.
 	UnknownCode = 500
+	// UnknownBizCode is unknown code for error info.
+	UnknownBizCode = 100001
 	// UnknownReason is unknown reason for error info.
 	UnknownReason = ""
 	// SupportPackageIsVersion1 this constant should not be referenced by any other code.
@@ -23,12 +25,12 @@ const (
 //go:generate protoc -I. --go_out=paths=source_relative:. errors.proto
 
 func (e *Error) Error() string {
-	return fmt.Sprintf("error: code = %d reason = %s message = %s metadata = %v", e.Code, e.Reason, e.Message, e.Metadata)
+	return fmt.Sprintf("error: http_code = %d biz_code = %d reason = %s message = %s metadata = %v", e.HttpCode, e.BizCode, e.Reason, e.Message, e.Metadata)
 }
 
 // GRPCStatus returns the Status represented by se.
 func (e *Error) GRPCStatus() *status.Status {
-	s, _ := status.New(httpstatus.ToGRPCCode(int(e.Code)), e.Message).
+	s, _ := status.New(httpstatus.ToGRPCCode(int(e.HttpCode)), e.Message).
 		WithDetails(&errdetails.ErrorInfo{
 			Reason:   e.Reason,
 			Metadata: e.Metadata,
@@ -52,22 +54,23 @@ func (e *Error) WithMetadata(md map[string]string) *Error {
 }
 
 // New returns an error object for the code, message.
-func New(code int, reason, message string) *Error {
+func New(httpCode int, bizCode int32, reason, message string) *Error {
 	return &Error{
-		Code:    int32(code),
-		Message: message,
-		Reason:  reason,
+		HttpCode: int32(httpCode),
+		BizCode:  bizCode,
+		Message:  message,
+		Reason:   reason,
 	}
 }
 
 // Newf New(code fmt.Sprintf(format, a...))
-func Newf(code int, reason, format string, a ...interface{}) *Error {
-	return New(code, reason, fmt.Sprintf(format, a...))
+func Newf(httpCode int, bizCode int32, reason, format string, a ...interface{}) *Error {
+	return New(httpCode, bizCode, reason, fmt.Sprintf(format, a...))
 }
 
 // Errorf returns an error object for the code, message and error info.
-func Errorf(code int, reason, format string, a ...interface{}) error {
-	return New(code, reason, fmt.Sprintf(format, a...))
+func Errorf(httpCode int, bizCode int32, reason, format string, a ...interface{}) error {
+	return New(httpCode, bizCode, reason, fmt.Sprintf(format, a...))
 }
 
 // Code returns the http code for a error.
@@ -77,7 +80,7 @@ func Code(err error) int {
 		return 200 //nolint:gomnd
 	}
 	if se := FromError(err); se != nil {
-		return int(se.Code)
+		return int(se.HttpCode)
 	}
 	return UnknownCode
 }
@@ -104,6 +107,7 @@ func FromError(err error) *Error {
 	if ok {
 		ret := New(
 			httpstatus.FromGRPCCode(gs.Code()),
+			UnknownBizCode,
 			UnknownReason,
 			gs.Message(),
 		)
@@ -116,5 +120,5 @@ func FromError(err error) *Error {
 		}
 		return ret
 	}
-	return New(UnknownCode, UnknownReason, err.Error())
+	return New(UnknownCode, UnknownBizCode, UnknownReason, err.Error())
 }

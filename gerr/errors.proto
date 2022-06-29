@@ -11,7 +11,9 @@ import "google/protobuf/descriptor.proto";
 
 message Error {
   // code is http code.
-  int32 code = 1;
+  int32 http_code = 1;
+  // code is biz code.
+  int32 biz_code = 2;
   // error reason, It consists of domain, model and error-info
   string reason = 3;
   // describe error.
@@ -33,11 +35,12 @@ message Settings {
   int32 default_http_code = 1;
   // 如果 EnumValue 没有设置 biz_code，则按照此数递增
   int32 start_biz_code = 2;
-  int32 default_message = 3;
+  // 如果 EnumValue 没有设置 default_message，则使用此数值
+  string default_message = 3;
 }
 
 message StatusCode {
   int32 http_code = 1;
-  int32 biz_code  = 2;
-  int32 message  = 3;
+  int32 biz_code = 2;
+  string message = 3;
 }

@@ -7,9 +7,11 @@ import (
 )
 
 func TestErrors(t *testing.T) {
-	e := ErrorTestNotFound("resource not found")
-	err := e.Error()
-	_= err
-	assert.True(t, IsTestNotFound(e))
-	assert.Equal(t, 100001, BizErrorCode(e))
+	e := ErrorOK("操作成功")
+	assert.True(t, IsOK(e))
+	assert.Equal(t, 100002, BizErrorCode(e))
+
+	e1 := OK
+	assert.True(t, IsOK(e1))
+	assert.Equal(t, 100002, BizErrorCode(e1))
 }

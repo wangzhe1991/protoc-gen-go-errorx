@@ -6,14 +6,19 @@ import "errors.proto";
 
 enum TestErrorReason {
     option (errors.settings) = {
-        default_http_code: 500
-        start_biz_code: 100001
-        default_message: 100001
+        default_http_code: 500       // 默认http code
+        start_biz_code   : 100001    // 业务code起始值
+        default_message  : "unknown" // 默认提示message
     };
-
-    TestNotFound = 0 [(errors.code) = {http_code:404 message:122}];
-    TestBusy = 1;
-    TestIncrease = 2 [(errors.code) = {http_code:502 biz_code:100010}];
-    TestRedirect = 3 [(errors.code) = {http_code:302}];
+    // 自定义错误
+    OK           = 0 [(errors.code) = {http_code: 200 biz_code: 100002 message: "ok"}];
+    Err          = 1 [(errors.code) = {http_code: 500 biz_code: 100003 message: "internal server failed"}];
+    Unknown      = 2 [(errors.code) = {http_code: 500 biz_code: 100004 message: "unknown failed"}];
+    DB           = 3 [(errors.code) = {http_code: 500 biz_code: 100005 message: "internal db failed"}];
+    Redis        = 4 [(errors.code) = {http_code: 500 biz_code: 100006 message: "internal redis failed"}];
+    GRPC         = 5 [(errors.code) = {http_code: 500 biz_code: 100007 message: "internal grpc failed"}];
+    NotFound     = 6 [(errors.code) = {http_code: 400 biz_code: 100008 message: "not found"}];
+    NoPermission = 7 [(errors.code) = {http_code: 400 biz_code: 100009 message: "no permission"}];
+    Existed      = 8 [(errors.code) = {http_code: 400 biz_code: 100010 message: "already existed"}];
+    ParamInvalid = 9 [(errors.code) = {http_code: 400 biz_code: 100011 message: "invalid param"}];
 }
-

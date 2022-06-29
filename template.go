@@ -7,26 +7,31 @@ import (
 
 var errorsTemplate = `
 var bizErrorCodeMap map[string]int = map[string]int{
-	{{ range .Errors }}
+{{ range .Errors }}
 		"{{.Name}}_{{.Value}}":{{.BizErrorCode}},
-	{{- end }}
+{{- end }}
 }
 {{ range .Errors }}
+var {{.CamelValue}} = gerr.New({{.HTTPCode}}, {{.BizErrorCode}},"{{.Name}}_{{.Value}}", "{{.Message}}")
+{{- end }}
 
+{{ range .Errors }}
+// Is{{.CamelValue}} {{.Message}}
 func Is{{.CamelValue}}(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := gerr.FromError(err)
-	return e.Reason == "{{.Name}}_{{.Value}}" && e.Code == {{.HTTPCode}}
+	return e.Reason == "{{.Name}}_{{.Value}}" && e.HttpCode == {{.HTTPCode}}
 }
 
+// Error{{.CamelValue}} {{.Message}}
 func Error{{.CamelValue}}(format string, args ...interface{}) *gerr.Error {
-	 return gerr.New({{.HTTPCode}}, "{{.Name}}_{{.Value}}", fmt.Sprintf(format, args...))
+	 return gerr.New({{.HTTPCode}}, {{.BizErrorCode}}, "{{.Name}}_{{.Value}}", fmt.Sprintf(format, args...))
 }
-
 {{- end }}
 
+// BizErrorCode 获取业务code编码
 func BizErrorCode(err error) int {
 	if err == nil {
 		return 0
@@ -42,6 +47,7 @@ type errorInfo struct {
 	HTTPCode     int
 	BizErrorCode int
 	CamelValue   string
+	Message      string
 }
 
 type errorWrapper struct {
