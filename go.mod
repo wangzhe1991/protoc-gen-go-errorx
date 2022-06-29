@@ -3,7 +3,6 @@ module github.com/wangzhe1991/protoc-gen-go-errorx
 go 1.17
 
 require (
-	github.com/driftingboy/protoc-gen-go-errors v0.0.0-20220410082919-0b552e80ddc4
 	github.com/golang/protobuf v1.5.2
 	github.com/stretchr/testify v1.7.5
 	google.golang.org/genproto v0.0.0-20220627200112-0a929928cb33

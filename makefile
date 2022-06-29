@@ -21,7 +21,8 @@ generate:
 # generate error test code
 test:
 	@cd ./test && protoc -I . -I ../gerr \
+ 		--proto_path=../third_party \
 		--go_out=paths=source_relative:. \
-        --go-xerrors_out=paths=source_relative:. \
+        --go-errorx_out=paths=source_relative:. \
 		test.proto && \
 	go test ./...

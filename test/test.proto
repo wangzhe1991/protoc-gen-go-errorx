@@ -8,9 +8,10 @@ enum TestErrorReason {
     option (errors.settings) = {
         default_http_code: 500
         start_biz_code: 100001
+        default_message: 100001
     };
 
-    TestNotFound = 0 [(errors.code) = {http_code:404}];
+    TestNotFound = 0 [(errors.code) = {http_code:404 message:122}];
     TestBusy = 1;
     TestIncrease = 2 [(errors.code) = {http_code:502 biz_code:100010}];
     TestRedirect = 3 [(errors.code) = {http_code:302}];
