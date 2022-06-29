@@ -13,8 +13,8 @@ import (
 
 func TestError(t *testing.T) { // 52-401
 	var base *Error
-	err := New(http.StatusBadRequest, "reason", "message")
-	err2 := New(http.StatusBadRequest, "reason", "message")
+	err := New(http.StatusBadRequest, 0,"reason", "message")
+	err2 := New(http.StatusBadRequest, 0,"reason", "message")
 	err3 := err.WithMetadata(map[string]string{
 		"foo": "bar",
 	})
@@ -54,7 +54,7 @@ func TestError(t *testing.T) { // 52-401
 	gs2, _ := status.New(codes.InvalidArgument, "bad request").WithDetails(&grpc_testing.Empty{})
 	se2 := FromError(gs2.Err())
 	// codes.InvalidArgument should convert to http.StatusBadRequest
-	if se2.Code != http.StatusBadRequest {
+	if se2.HttpCode != http.StatusBadRequest {
 		t.Errorf("convert code err, got %d want %d", UnknownCode, http.StatusBadRequest)
 	}
 }

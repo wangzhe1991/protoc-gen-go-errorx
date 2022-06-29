@@ -41,6 +41,6 @@ message Settings {
 
 message StatusCode {
   int32 http_code = 1;
-  int32 biz_code = 2;
-  string message = 3;
+  int32 biz_code  = 2;
+  string message  = 3;
 }
