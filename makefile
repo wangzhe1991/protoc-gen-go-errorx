@@ -30,7 +30,7 @@ test:
 	go test ./...
 
 # sdk的git版本号
-TagName = v1.0.2
+TagName = v1.0.3
 gitag:
 	git add . && git commit -m "$(TagName)"
 	git push
